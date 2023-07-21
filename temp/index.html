@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Send Message</title>
+  </head>
+  <body>
+    <button id="sendButton">Send Message</button>
+
+    <script>
+      document.getElementById("sendButton").addEventListener("click", () => {
+        fetch("http://localhost:3030/send-message", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: "Hello from the web client!",
+          }),
+        })
+          .then((response) => response.text())
+          .then((data) => {
+            console.log(data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      });
+    </script>
+  </body>
+</html>

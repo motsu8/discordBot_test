@@ -1,0 +1,29 @@
+{
+  "name": "discordbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "oauth2.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js",
+    "oauth": "nodemon",
+    "getObj": "nodemon getObj/oauth.js",
+    "extension": "nodemon extension/oauth.js",
+    "temp": "nodemon temp/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "volta": {
+    "node": "18.16.1",
+    "npm": "9.8.0"
+  },
+  "dependencies": {
+    "discord.js": "^14.11.0",
+    "express": "^4.18.2",
+    "nodemon": "^3.0.1",
+    "undici": "^5.22.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.45.0"
+  }
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Discord OAuth2 App</title>
+  </head>
+  <body>
+    <div id="ele" style="display: flex">
+      <div id="avatar"></div>
+      <div id="info">Hoi!</div>
+    </div>
+    <!-- Note: This example uses the implicit grant flow (https://discordjs.guide/oauth2/#implicit-grant-flow), so make sure you use `response_type=token` here -->
+    <button id="login" style="display: none">Identify Yourself</button>
+    <script>
+      const login = document.getElementById("login");
+      const url =
+        "https://discord.com/api/oauth2/authorize?client_id=1130079596839182376&redirect_uri=http%3A%2F%2Flocalhost%3A53134&response_type=code&scope=identify%20guilds%20guilds.members.read";
+
+      const insertImgElement = (imgUrl) => {
+        const target = document.getElementById("avatar");
+        const imgEle = document.createElement("img");
+        imgEle.src = imgUrl;
+        target.append(imgEle);
+        console.log("worked!!!");
+      };
+
+      login.addEventListener("click", () => {
+        window.open(url, "_blank");
+
+        fetch("http://localhost:53134/user", {
+          method: 'GET',
+          mode: 'no-cors',
+          headers: {
+          "Content-Type": "application/json",
+          }
+        })
+          .then((res) => res.json())
+          .then((response) => {
+            console.log(response)
+            // const { username, discriminator, avatar, id } = response;
+            // imgUrl = `https://cdn.discordapp.com/avatars/${id}/${avatar}.jpeg`;
+            // insertImgElement(imgUrl);
+            // console.log(document.getElementById("info"));
+            // document.getElementById(
+            //   "info"
+            // ).innerText = `${username}#${discriminator}`;
+            // console.log(username)
+          });
+      });
+
+      function generateRandomString() {
+        let randomString = "";
+        const randomNumber = Math.floor(Math.random() * 10);
+
+        for (let i = 0; i < 20 + randomNumber; i++) {
+          randomString += String.fromCharCode(
+            33 + Math.floor(Math.random() * 94)
+          );
+        }
+
+        return randomString;
+      }
+      window.onload = () => {
+        const fragment = new URLSearchParams(window.location.search);
+        const [code, state] = [fragment.get("code"), fragment.get("state")];
+
+        if (!code) {
+          const randomString = generateRandomString();
+          localStorage.setItem("oauth-state", randomString);
+
+          login.href += `&state=${btoa(randomString)}`;
+          return (login.style.display = "block");
+        }
+
+        if (
+          localStorage.getItem("oauth-state") !==
+          atob(decodeURIComponent(state))
+        ) {
+          return console.log("You may have been clickjacked!");
+        }
+      };
+    </script>
+  </body>
+</html>
