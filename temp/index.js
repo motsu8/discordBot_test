@@ -24,17 +24,18 @@ const client = new Client({
 client.once(Events.ClientReady, async (c) => {
   console.log(`準備OKです! ${c.user.tag}がログインします。`);
 
-  // // サーバーのテキストチャンネルリストを取得
+  //サーバーのユーザー取得
   console.log("---サーバーメンバー---");
   const guild = await client.guilds.fetch(DISCORD_GUILD_ID);
-  console.log(guild);
   const members = await guild.members.list({limit: 50, cache: true})
   members.each(member => console.log(member.user.username))
-
-  // // サーバーの特定のテキストチャンネルに参加しているメンバー取得
-  // const members = textChannels.first().members;
-  // console.log(members)
-  // members.each((member) => console.log(member.displayName));
+  
+  // サーバーの特定のテキストチャンネルに参加しているメンバー取得
+  console.log("---テトリスチャンネルユーザー---");
+  const tetrisChannel = await guild.channels.fetch("1103934213490753566") // tetris
+  const tetrisUser = await tetrisChannel.members
+  tetrisUser.each(member => console.log(member.user.username))
+  
 
   // roles
   // const roles = guild.roles.cache.filter(role => role.name === "admin")
