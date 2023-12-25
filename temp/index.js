@@ -27,20 +27,19 @@ client.once(Events.ClientReady, async (c) => {
   //サーバーのユーザー取得
   console.log("---サーバーメンバー---");
   const guild = await client.guilds.fetch(DISCORD_GUILD_ID);
-  const members = await guild.members.list({limit: 50, cache: true})
+  const members = await guild.members.list({ limit: 500, cache: true })
   members.each(member => console.log(member.user.username))
-  
+
   // サーバーの特定のテキストチャンネルに参加しているメンバー取得
   console.log("---テトリスチャンネルユーザー---");
   const tetrisChannel = await guild.channels.fetch("1103934213490753566") // tetris
   const tetrisUser = await tetrisChannel.members
   tetrisUser.each(member => console.log(member.user.username))
-  
 
-  // roles
-  // const roles = guild.roles.cache.filter(role => role.name === "admin")
-  // roles.each(role => console.log(role))
-  // member.roles.cache.has('役職ID')
+  // motus8の参加しているテキストチャンネル
+  console.log("---氷菓の参加しているテキストチャンネル---");
+  const motsuChannels = await guild.channels.fetch();
+  motsuChannels.filter(channel => channel.members.some(member => member.user.username === '氷菓') && channel.type === 0).each(channel => console.log(channel.name))
 });
 
 client.on("messageCreate", async (message) => {
